@@ -13,9 +13,6 @@ app.get("/", (req, res) => {
   res.send("Dream Tour is running");
 });
 
-// tRM7C3M8JoeVE8od
-//experienceTour
-
 console.log(process.env.DB_TOURIST);
 
 const uri = `mongodb+srv://${process.env.DB_TOURIST}:${process.env.DB_PASS}@cluster0.ujgfmru.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
