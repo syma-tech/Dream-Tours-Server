@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   res.send("Dream Tour is running");
 });
 
-console.log(process.env.DB_TOURIST);
+// console.log(process.env.DB_TOURIST);
 
 const uri = `mongodb+srv://${process.env.DB_TOURIST}:${process.env.DB_PASS}@cluster0.ujgfmru.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 // const uri = "mongodb+srv://<username>:<password>@cluster0.ujgfmru.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
@@ -32,7 +32,13 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    app.get("/tours", async (req, res) => {});
+    const toursCollection = client.db("dreamTourDB").collection("tours");
+
+    app.get("/tours", async (req, res) => {
+      const cursor = toursCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
@@ -41,7 +47,7 @@ async function run() {
     );
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
