@@ -34,6 +34,7 @@ async function run() {
     // await client.connect();
 
     const toursCollection = client.db("dreamTourDB").collection("tours");
+    const bookingCollection = client.db("dreamTourDB").collection("booking");
 
     app.get("/tours", async (req, res) => {
       const cursor = toursCollection.find();
@@ -45,6 +46,30 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await toursCollection.findOne(query);
+      res.send(result);
+    });
+
+    // booking apis here
+    app.get("/bookings", async (req, res) => {
+      console.log(req.query.email);
+      let query = {};
+      if (req.query?.email) {
+        query = { email: req.query?.email };
+      }
+      const result = await bookingCollection.find().toArray();
+      // console.log(result);
+      res.send(result);
+    });
+
+    // app.get("/bookings", async (req, res) => {
+    //   console.log(req.query.email);
+
+    // });
+
+    app.post("/bookings", async (req, res) => {
+      const bookings = req.body;
+      console.log(bookings);
+      const result = await bookingCollection.insertOne(bookings);
       res.send(result);
     });
 
